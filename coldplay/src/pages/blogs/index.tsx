@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const marked = new Marked();
-const APIToken = "cff29613ffc48c09f6469828c6cdad8349d8600a8bbffa822a1b253941189f487262732256ed0321a8b89a42d35ea57f3464ad58fc2b974eac3e99d7ff5ebc7442862cbb66da374196e939d719360256042976b664516437c8d6626cd40bc13b419b19e3f58874c656a04288069e8af24098340fe3492a339cbf413d17d926d2";
+const APIToken = "5fd0008e632b90a8105c8a1dba55dd9f62da211212eb8db32bceebe5e7622b94deedf06130e968b6d9cce98c1b3168dfc63ff5338bfabe57738c7e93d4be18e063af053e830ded1d7bf5fc95a68edb0af5fe0036a7cef3fdf7cc649cafabd84af0d9a4f6fc51f333e0a2bd7cff992a70bad90255cbb523702efdce8349196c4a";
 
 interface PostsProps{
     posts: Post[]
@@ -13,30 +13,35 @@ interface PostsProps{
 
 export const getServerSideProps : GetServerSideProps<PostsProps> = async () => {
 
-    try {
-        const response = await fetch("http://localhost:1337/api/posts?populate=*", {
-            headers: {
-                Authorization: `Bearer ${APIToken}`,
-            },
-        });
+    const response = await fetch("http://localhost:1337/api/posts?populate=*", {
+        headers: {
+            Authorization: `Bearer ${APIToken}`,
+        },
+    });
     
-        const responseData =  await response.json();
-        const posts: Post[] = responseData.data.map((post: any) => post.attributes)
-        console.log("Posts:", posts);
-        return {
-            props: {
-                posts: Array.isArray(posts) ? posts : []
-            },
-        };    
-    } catch (error) {
-        console.error("Error fetching posts:", error);
-
-        return{
-            props: {
-                posts: [],
-            }
-        }
-    }
+    const responseData =  await response.json();
+    const posts: Post[] = responseData.data.map((post: any) => post.attributes)
+      //Authors
+  const responseAuthors = await fetch("http://localhost:1337/api/authors?populate=*", {
+    headers: {
+    Authorization: `Bearer ${APIToken}`}});
+    const responseAuthorsData = await responseAuthors.json();
+    const authors: Author[] = responseAuthorsData.data.map((author: any) => author.attributes);
+    //Linking authors to posts
+     for (const post of posts) {
+       let author = authors.find((author) => post.author.data.attributes.email === author.email);
+       if (author) {
+         post.author = author;
+       } else {
+       }
+     };
+  
+    console.log("Posts:", posts);
+    return {
+        props: {
+            posts: Array.isArray(posts) ? posts : []
+        },
+    };    
 
 };
 
@@ -45,20 +50,18 @@ export default function BlogsPage({posts}: { posts: Post[] }){
     return (
     <>
         <h1>Dit is de blogpagina</h1>
-        <ul>
-        {posts.length > 0 ? (
+        <ul style={{display: "flex", justifyContent:"space-around", alignItems:"center", alignContent:"center"}}>
+        {
           posts.map((post, index) => (
             <Link href={"/blogs/" + index} key={index}>
-              <h2>{post.title}</h2>
-              <p>{post.content}</p>
-              <p>{post.author.firstname}</p>
-              {/* Accessing author properties */}
-              {/* Adjust 'name' based on the property of the 'Author' interface */}
+                <button style={{padding:"50px"}}>
+                <h2>{post.title}</h2>
+                <p><i>{post.author.firstname} {post.author.lastname}</i></p>
+                </button>
             </Link>
           ))
-        ) : (
-          <li>No posts available</li>
-        )}        </ul>
+        }        
+        </ul>
     </>
     );
 };
