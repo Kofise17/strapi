@@ -9,7 +9,8 @@ import Link from 'next/link';
       <ul style={{display:'flex', flexDirection:'row', justifyContent:"space-around", alignItems:"flex-end"}}>
         <li><Link href="/">Home</Link></li>
         <li><Link href="/blogs">Blogs</Link></li>
-        <li><Link href="/band">Overzicht</Link></li>
+        <li><Link href="/biografie">Biografie</Link></li>
+        <li><Link href="/discografie">Discografie</Link></li>
       </ul>
     </nav>
   );

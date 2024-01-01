@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "bands",
+  "info": {
+    "singularName": "band",
+    "pluralName": "bands",
+    "displayName": "Band",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "band_members": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::band-member.band-member"
+    },
+    "bandImage": {
+      "type": "string"
+    }
+  }
+}

@@ -19,6 +19,18 @@
       "relation": "oneToMany",
       "target": "api::album.album",
       "mappedBy": "label"
+    },
+    "singles": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::single.single",
+      "mappedBy": "label"
+    },
+    "videos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::video.video",
+      "mappedBy": "label"
     }
   }
 }

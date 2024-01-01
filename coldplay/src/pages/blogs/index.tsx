@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const marked = new Marked();
-const APIToken = "5fd0008e632b90a8105c8a1dba55dd9f62da211212eb8db32bceebe5e7622b94deedf06130e968b6d9cce98c1b3168dfc63ff5338bfabe57738c7e93d4be18e063af053e830ded1d7bf5fc95a68edb0af5fe0036a7cef3fdf7cc649cafabd84af0d9a4f6fc51f333e0a2bd7cff992a70bad90255cbb523702efdce8349196c4a";
+const APIToken = "b81151201d993dddbf9512fdfe513f490ecdf816a51175fb7a8f30a2a1ac55eadc6562c528e9fd6f00bf7a736e86c9a7ceb95c7f7259bacd373cb87866f1e06542c8021de8711c440e0dc43a2401c949b4b93064eb8d25ff43c7ad7c05625d75ce5d67926207cf03ad8b7156ad74f85ed37bd657a8cc7d81f2913eafc7f60673";
 
 interface PostsProps{
     posts: Post[]
@@ -49,19 +49,24 @@ export default function BlogsPage({posts}: { posts: Post[] }){
     console.log("posts length",posts.length)
     return (
     <>
-        <h1>Dit is de blogpagina</h1>
-        <ul style={{display: "flex", justifyContent:"space-around", alignItems:"center", alignContent:"center"}}>
-        {
-          posts.map((post, index) => (
-            <Link href={"/blogs/" + index} key={index}>
-                <button style={{padding:"50px"}}>
-                <h2>{post.title}</h2>
-                <p><i>{post.author.firstname} {post.author.lastname}</i></p>
-                </button>
-            </Link>
-          ))
-        }        
-        </ul>
+      <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
+        <h1>Al onze beschikbare posts</h1>
+        <p>Klik op de titels van de post en je kan de volledige post bekijken</p>
+      </div>
+      <div>
+          <ul style={{display: "flex", justifyContent:"space-around", alignItems:"center", alignContent:"center"}}>
+          {
+            posts.map((post, index) => (
+              <div key={index} style={{boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)"}}>
+                  <button style={{padding:"0px 50px 0px 50px" , display:"flex", flexDirection:"column"}}>
+                    <Link href={"/blogs/" + index}><h1>{post.title}</h1></Link>
+                    <p><i>{post.author.firstname} {post.author.lastname}</i></p>
+                  </button>
+              </div>
+            ))
+          }        
+          </ul>
+      </div>
     </>
     );
 };

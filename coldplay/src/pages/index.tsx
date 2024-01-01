@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 
-const APIToken = "5fd0008e632b90a8105c8a1dba55dd9f62da211212eb8db32bceebe5e7622b94deedf06130e968b6d9cce98c1b3168dfc63ff5338bfabe57738c7e93d4be18e063af053e830ded1d7bf5fc95a68edb0af5fe0036a7cef3fdf7cc649cafabd84af0d9a4f6fc51f333e0a2bd7cff992a70bad90255cbb523702efdce8349196c4a";
+const APIToken = "b81151201d993dddbf9512fdfe513f490ecdf816a51175fb7a8f30a2a1ac55eadc6562c528e9fd6f00bf7a736e86c9a7ceb95c7f7259bacd373cb87866f1e06542c8021de8711c440e0dc43a2401c949b4b93064eb8d25ff43c7ad7c05625d75ce5d67926207cf03ad8b7156ad74f85ed37bd657a8cc7d81f2913eafc7f60673";
 
 interface PostProps {
   post: Post
@@ -48,10 +48,15 @@ export default function Home ({post} : {post: Post}) {
   console.log(post)
   return (
     <>
-      <h1>Home pagina</h1>
-      <p>Op deze pagina komt de meest recentstse blogpost</p>
-      {post.content}
-      <p><i>- {post.author.firstname} {post.author.lastname}</i></p>
+      <div style={{display: "flex", flexDirection:"column", alignItems:"center"}}>
+          <h1>Welkom</h1>
+          <p>Welkom bij deze blog-website over de beste band in de wereld: Coldplay</p>
+          <p>Op deze website kan je al hun singles, albums en videos bekijken en je kna ook nog veel bijleren over de leden zelf!</p>
+          <p>Go and explore my fellow Coldplayers!</p>
+          <h2>Nieuwste post</h2>
+          {post.content}
+          <p><i>- {post.author.firstname} {post.author.lastname}</i></p>
+      </div>
     </>
   );
 }

@@ -752,6 +752,68 @@ export interface ApiAuthorAuthor extends Schema.CollectionType {
   };
 }
 
+export interface ApiBandBand extends Schema.CollectionType {
+  collectionName: 'bands';
+  info: {
+    singularName: 'band';
+    pluralName: 'bands';
+    displayName: 'Band';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    band_members: Attribute.Relation<
+      'api::band.band',
+      'oneToMany',
+      'api::band-member.band-member'
+    >;
+    bandImage: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::band.band', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::band.band', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiBandMemberBandMember extends Schema.CollectionType {
+  collectionName: 'band_members';
+  info: {
+    singularName: 'band-member';
+    pluralName: 'band-members';
+    displayName: 'BandMember';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    stageName: Attribute.String;
+    fullName: Attribute.String;
+    shortBio: Attribute.Text;
+    longBio: Attribute.RichText;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::band-member.band-member',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::band-member.band-member',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiLabelLabel extends Schema.CollectionType {
   collectionName: 'labels';
   info: {
@@ -768,6 +830,16 @@ export interface ApiLabelLabel extends Schema.CollectionType {
       'api::label.label',
       'oneToMany',
       'api::album.album'
+    >;
+    singles: Attribute.Relation<
+      'api::label.label',
+      'oneToMany',
+      'api::single.single'
+    >;
+    videos: Attribute.Relation<
+      'api::label.label',
+      'oneToMany',
+      'api::video.video'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -816,6 +888,81 @@ export interface ApiPostPost extends Schema.CollectionType {
   };
 }
 
+export interface ApiSingleSingle extends Schema.CollectionType {
+  collectionName: 'singles';
+  info: {
+    singularName: 'single';
+    pluralName: 'singles';
+    displayName: 'Single';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String;
+    label: Attribute.Relation<
+      'api::single.single',
+      'manyToOne',
+      'api::label.label'
+    >;
+    releaseYear: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::single.single',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::single.single',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiVideoVideo extends Schema.CollectionType {
+  collectionName: 'videos';
+  info: {
+    singularName: 'video';
+    pluralName: 'videos';
+    displayName: 'Video';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String;
+    label: Attribute.Relation<
+      'api::video.video',
+      'manyToOne',
+      'api::label.label'
+    >;
+    url: Attribute.String;
+    releaseYear: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::video.video',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::video.video',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -834,8 +981,12 @@ declare module '@strapi/types' {
       'plugin::i18n.locale': PluginI18NLocale;
       'api::album.album': ApiAlbumAlbum;
       'api::author.author': ApiAuthorAuthor;
+      'api::band.band': ApiBandBand;
+      'api::band-member.band-member': ApiBandMemberBandMember;
       'api::label.label': ApiLabelLabel;
       'api::post.post': ApiPostPost;
+      'api::single.single': ApiSingleSingle;
+      'api::video.video': ApiVideoVideo;
     }
   }
 }

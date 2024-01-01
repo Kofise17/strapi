@@ -21,5 +21,32 @@ interface Album {
 
 interface Label {
     name: string,
-    albums: Album[]
+    albums: Album[],
+    singles: Single[],
+    videos: Video[]
+}
+
+interface Single {
+    title: string,
+    label: Label,
+    releaseYear: string
+}
+
+interface Video {
+    title: string,
+    label: Label,
+    url: string,
+    releaseYear: string
+}
+
+interface Band {
+    name: string,
+    band_members: BandMember[]
+    bandImage:string
+}
+interface BandMember{
+    stageName: string,
+    fullName: string,
+    shortBio: string,
+    longBio: string
 }

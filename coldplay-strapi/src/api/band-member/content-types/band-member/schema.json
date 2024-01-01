@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "band_members",
+  "info": {
+    "singularName": "band-member",
+    "pluralName": "band-members",
+    "displayName": "BandMember"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "stageName": {
+      "type": "string"
+    },
+    "fullName": {
+      "type": "string"
+    },
+    "shortBio": {
+      "type": "text"
+    },
+    "longBio": {
+      "type": "richtext"
+    }
+  }
+}
