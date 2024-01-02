@@ -22,6 +22,9 @@
     },
     "bandImage": {
       "type": "string"
+    },
+    "biography": {
+      "type": "richtext"
     }
   }
 }

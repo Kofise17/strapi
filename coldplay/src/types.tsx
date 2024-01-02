@@ -9,7 +9,8 @@ interface Author {
 interface Post {
     title: string,
     content: string,
-    author: Author
+    author: Author,
+    previewText: string
 }
 
 interface Album {
@@ -42,11 +43,13 @@ interface Video {
 interface Band {
     name: string,
     band_members: BandMember[]
-    bandImage:string
+    bandImage:string,
+    biography: string
 }
 interface BandMember{
     stageName: string,
     fullName: string,
     shortBio: string,
-    longBio: string
+    longBio: string,
+    bandMemberImage:string
 }

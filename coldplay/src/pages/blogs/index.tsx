@@ -2,10 +2,8 @@ import axios from "axios";
 import { Marked } from "marked";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
-const marked = new Marked();
-const APIToken = "b81151201d993dddbf9512fdfe513f490ecdf816a51175fb7a8f30a2a1ac55eadc6562c528e9fd6f00bf7a736e86c9a7ceb95c7f7259bacd373cb87866f1e06542c8021de8711c440e0dc43a2401c949b4b93064eb8d25ff43c7ad7c05625d75ce5d67926207cf03ad8b7156ad74f85ed37bd657a8cc7d81f2913eafc7f60673";
+const APIToken = process.env.TOKEN
 
 interface PostsProps{
     posts: Post[]
@@ -35,8 +33,7 @@ export const getServerSideProps : GetServerSideProps<PostsProps> = async () => {
        } else {
        }
      };
-  
-    console.log("Posts:", posts);
+ 
     return {
         props: {
             posts: Array.isArray(posts) ? posts : []
@@ -46,23 +43,26 @@ export const getServerSideProps : GetServerSideProps<PostsProps> = async () => {
 };
 
 export default function BlogsPage({posts}: { posts: Post[] }){
-    console.log("posts length",posts.length)
     return (
     <>
       <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
         <h1>Al onze beschikbare posts</h1>
         <p>Klik op de titels van de post en je kan de volledige post bekijken</p>
       </div>
-      <div>
-          <ul style={{display: "flex", justifyContent:"space-around", alignItems:"center", alignContent:"center"}}>
+      <div style={{display:"flex"}}>
+          <ul style={{columnCount:"3", padding:"5px 15px 5px 15px"}}>
           {
             posts.map((post, index) => (
-              <div key={index} style={{boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)"}}>
-                  <button style={{padding:"0px 50px 0px 50px" , display:"flex", flexDirection:"column"}}>
-                    <Link href={"/blogs/" + index}><h1>{post.title}</h1></Link>
+              <li key={index} style={{ listStyleType:"none"}}>
+                <Link href={"/blogs/" + index} style={{textDecoration:"none"}}>
+                  <button style={{padding:"0px 50px 0px 50px" , display:"flex", flexDirection:"column", backgroundColor:"white", borderColor:"black", borderRadius:"5px",height:"300px"}}>
+                    <Link href={"/blogs/" + index} style={{textDecoration:"none", color:"black"}}><h1>{post.title}</h1></Link>
+                    <p>{post.previewText}</p>
                     <p><i>{post.author.firstname} {post.author.lastname}</i></p>
                   </button>
-              </div>
+                  <br />
+                  </Link>
+              </li>
             ))
           }        
           </ul>

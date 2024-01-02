@@ -771,6 +771,7 @@ export interface ApiBandBand extends Schema.CollectionType {
       'api::band-member.band-member'
     >;
     bandImage: Attribute.String;
+    biography: Attribute.RichText;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -787,6 +788,7 @@ export interface ApiBandMemberBandMember extends Schema.CollectionType {
     singularName: 'band-member';
     pluralName: 'band-members';
     displayName: 'BandMember';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -796,6 +798,7 @@ export interface ApiBandMemberBandMember extends Schema.CollectionType {
     fullName: Attribute.String;
     shortBio: Attribute.Text;
     longBio: Attribute.RichText;
+    bandMemberImage: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -878,6 +881,7 @@ export interface ApiPostPost extends Schema.CollectionType {
       'manyToOne',
       'api::author.author'
     >;
+    previewText: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

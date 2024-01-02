@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 
-const APIToken = "b81151201d993dddbf9512fdfe513f490ecdf816a51175fb7a8f30a2a1ac55eadc6562c528e9fd6f00bf7a736e86c9a7ceb95c7f7259bacd373cb87866f1e06542c8021de8711c440e0dc43a2401c949b4b93064eb8d25ff43c7ad7c05625d75ce5d67926207cf03ad8b7156ad74f85ed37bd657a8cc7d81f2913eafc7f60673";
+const APIToken = process.env.TOKEN;
 
 interface PostProps {
   post: Post
@@ -45,7 +45,6 @@ export const getServerSideProps : GetServerSideProps<PostProps> = async () => {
 
 
 export default function Home ({post} : {post: Post}) {
-  console.log(post)
   return (
     <>
       <div style={{display: "flex", flexDirection:"column", alignItems:"center"}}>
@@ -54,7 +53,7 @@ export default function Home ({post} : {post: Post}) {
           <p>Op deze website kan je al hun singles, albums en videos bekijken en je kna ook nog veel bijleren over de leden zelf!</p>
           <p>Go and explore my fellow Coldplayers!</p>
           <h2>Nieuwste post</h2>
-          {post.content}
+          <p style={{width:"500px"}}>{post.content}</p>
           <p><i>- {post.author.firstname} {post.author.lastname}</i></p>
       </div>
     </>

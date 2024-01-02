@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 
-const APIToken = "b81151201d993dddbf9512fdfe513f490ecdf816a51175fb7a8f30a2a1ac55eadc6562c528e9fd6f00bf7a736e86c9a7ceb95c7f7259bacd373cb87866f1e06542c8021de8711c440e0dc43a2401c949b4b93064eb8d25ff43c7ad7c05625d75ce5d67926207cf03ad8b7156ad74f85ed37bd657a8cc7d81f2913eafc7f60673";
+const APIToken = process.env.TOKEN
 
 
 interface DiscographyProps{
@@ -52,19 +52,21 @@ export default function DiscoPage({albums, singles, videos}: {albums: Album[], s
         <>
             <h1>Dit is de discografie pagina</h1>
             <div style={{display: "flex", justifyContent:"center", alignItems:"center", flexDirection:"column"}}>
-                <div style={{display:"flex", alignItems:"center"}}>
+                <div style={{display:"flex"}}>
                     <ul>
                         <h2>Albums</h2>
                             {albums.map((album, index)=>(
-                                <li key={index}>{album.title} {album.releaseYear}</li>    
+                                <li key={index} style={{listStyleType:"none", paddingTop:"-50px"}}>{album.title} {album.releaseYear}</li>    
                             ))}    
                     </ul>
-                    <ul>
-                        <h2>Singles</h2>
-                            {singles.map((single, index) => (
-                                <li key={index}>{single.title} {single.releaseYear}</li>
-                            ))}
-                    </ul>
+                    <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
+                    <h2>Singles</h2>
+                        <ul style={{columnCount:"3" }}>
+                                {singles.map((single, index) => (
+                                    <li key={index} style={{listStyleType:"none", maxWidth:"200px", borderStyle:"dotted", borderWidth:"2px"}}>{single.title}-{single.releaseYear}</li>
+                                ))}
+                        </ul>
+                    </div>
                 </div>
                 <ul style={{display:"flex", flexDirection:"column"}}>
                     <h2>Videos</h2>
