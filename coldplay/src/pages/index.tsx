@@ -1,4 +1,4 @@
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticProps } from "next";
 
 const APIToken = process.env.TOKEN;
 
@@ -6,7 +6,7 @@ interface PostProps {
   post: Post
 }
 
-export const getServerSideProps : GetServerSideProps<PostProps> = async () => {
+export const getStaticProps : GetStaticProps<PostProps> = async () => {
   //Posts
     const responsePosts = await fetch("http://localhost:1337/api/posts?populate=*", {
       headers: {
@@ -17,20 +17,20 @@ export const getServerSideProps : GetServerSideProps<PostProps> = async () => {
   const responsePostsData =  await responsePosts.json();
   const posts: Post[] = responsePostsData.data.map((post: any) => post.attributes)
 
-  //Authors
-  const responseAuthors = await fetch("http://localhost:1337/api/authors?populate=*", {
-  headers: {
-  Authorization: `Bearer ${APIToken}`}});
-  const responseAuthorsData = await responseAuthors.json();
-  const authors: Author[] = responseAuthorsData.data.map((author: any) => author.attributes);
-  //Linking authors to posts
-   for (const post of posts) {
-     let author = authors.find((author) => post.author.data.attributes.email === author.email);
-     if (author) {
-       post.author = author;
-     } else {
-     }
-   };
+  // //Authors
+  // const responseAuthors = await fetch("http://localhost:1337/api/authors?populate=*", {
+  // headers: {
+  // Authorization: `Bearer ${APIToken}`}});
+  // const responseAuthorsData = await responseAuthors.json();
+  // const authors: Author[] = responseAuthorsData.data.map((author: any) => author.attributes);
+  // //Linking authors to posts
+  //  for (const post of posts) {
+  //    let author = authors.find((author) => post.author.data.attributes.email === author.email);
+  //    if (author) {
+  //      post.author = author;
+  //    } else {
+  //    }
+  //  };
    //Getting the latestpost
   const lastIndex = posts.length - 1;
   const latestPost = posts[lastIndex];

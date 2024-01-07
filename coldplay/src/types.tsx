@@ -17,7 +17,6 @@ interface Album {
     title: string,
     releaseYear: string,
     label: Label
-
 }
 
 interface Label {

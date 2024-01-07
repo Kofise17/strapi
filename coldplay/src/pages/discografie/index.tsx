@@ -1,4 +1,4 @@
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticProps } from "next";
 
 const APIToken = process.env.TOKEN
 
@@ -9,7 +9,13 @@ interface DiscographyProps{
     videos: Video[]
 }
 
-export const getServerSideProps : GetServerSideProps<DiscographyProps> = async () => {
+export const getStaticProps : GetStaticProps<DiscographyProps> = async () => {
+    let fakeLabel: Label= {
+        name:"randomLabel",
+        albums: [],
+        singles: [],
+        videos: []
+    }
     // Getting albums
     const responseAlbums = await fetch("http://localhost:1337/api/albums?populate=*", {
         headers: {
@@ -18,7 +24,19 @@ export const getServerSideProps : GetServerSideProps<DiscographyProps> = async (
     });
 
     const responseAlbumData = await responseAlbums.json();
-    const albums: Album[] = responseAlbumData.data.map((album: any) => album.attributes)
+    let albums: Album[] = [];
+
+    if (responseAlbumData && responseAlbumData.data && responseAlbumData.data.length > 0) {
+        albums = responseAlbumData.data.map((albumData: any) => {
+            const album: Album = {
+                title: albumData.attributes.title,
+                releaseYear: albumData.attributes.releaseYear,
+                label: fakeLabel        
+            };
+            return album;
+        })
+    }
+
     //Getting Singles
     const responseSingles = await fetch("http://localhost:1337/api/singles?populate=*", {
         headers: {
@@ -27,7 +45,18 @@ export const getServerSideProps : GetServerSideProps<DiscographyProps> = async (
     });
 
     const responseSingleData = await responseSingles.json();
-    const singles: Single[] = responseSingleData.data.map((single: any) => single.attributes)
+    let singles: Single[] = [];
+     
+    if (responseSingleData && responseSingleData.data && responseSingleData.data.length) {
+        singles = responseSingleData.data.map((singleData: any) => {
+            const single : Single = {
+                title: singleData.attributes.title,
+                label: fakeLabel,
+                releaseYear: singleData.attributes.releaseYear         
+            }
+            return single;
+        })
+    }
 
     //Getting videos
     const responseVideos = await fetch("http://localhost:1337/api/videos?populate=*", {
@@ -37,7 +66,20 @@ export const getServerSideProps : GetServerSideProps<DiscographyProps> = async (
     });
 
     const responseVideosData = await responseVideos.json();
-    const videos: Video[] = responseVideosData.data.map((video: any) => video.attributes);
+    let videos: Video[] = [];
+
+    if (responseVideosData && responseVideosData.data && responseVideosData.data.length > 0) {
+        videos = responseVideosData.data.map((videoData:any) => {
+            const video : Video = {
+                title: videoData.attributes.title,
+                label: fakeLabel,
+                url: videoData.attributes.url,
+                releaseYear: videoData.attributes.releaseYear    
+            }
+            return video;
+        })
+    }
+
     return{
         props: {
             albums: albums,

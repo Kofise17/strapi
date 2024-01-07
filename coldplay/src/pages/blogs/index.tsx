@@ -9,34 +9,52 @@ interface PostsProps{
     posts: Post[]
 }
 
-export const getServerSideProps : GetServerSideProps<PostsProps> = async () => {
+export const getStaticProps : GetStaticProps<PostsProps> = async () => {
 
+          //Authors
+  const responseAuthors = await fetch("http://localhost:1337/api/authors?populate=*", {
+    headers: {
+    Authorization: `Bearer ${APIToken}`}});
+    const responseAuthorsData = await responseAuthors.json();
+    let authors: Author[] = [];
+
+    //Posts
     const response = await fetch("http://localhost:1337/api/posts?populate=*", {
         headers: {
             Authorization: `Bearer ${APIToken}`,
         },
     });
     
-    const responseData =  await response.json();
-    const posts: Post[] = responseData.data.map((post: any) => post.attributes)
-      //Authors
-  const responseAuthors = await fetch("http://localhost:1337/api/authors?populate=*", {
-    headers: {
-    Authorization: `Bearer ${APIToken}`}});
-    const responseAuthorsData = await responseAuthors.json();
-    const authors: Author[] = responseAuthorsData.data.map((author: any) => author.attributes);
-    //Linking authors to posts
-     for (const post of posts) {
-       let author = authors.find((author) => post.author.data.attributes.email === author.email);
-       if (author) {
-         post.author = author;
-       } else {
-       }
-     };
- 
+        const responseData =  await response.json();
+    let posts: Post[] = []; 
+
+    if (responseAuthorsData && responseAuthorsData.data && responseAuthorsData.data.length > 0) {
+        authors = responseAuthorsData.data.map((authorData: any)=> {
+            const author: Author = {
+                firstname: authorData.attributes.firstname,
+                lastname: authorData.attributes.lastname,
+                email: authorData.attributes.email,
+                shortBio: authorData.attributes.shortBio,
+                posts: posts
+            }
+            return author;
+        })
+    }
+
+    if (responseData && responseData.data && responseData.data.length > 0) {
+        posts = responseData.data.map((postData: any)=> {
+            const post: Post = {
+                title: postData.attributes.title,
+                content: postData.attributes.content,
+                author: authors[0],
+                previewText: postData.attributes.previewText
+                        }
+            return post;
+        })
+    }
     return {
         props: {
-            posts: Array.isArray(posts) ? posts : []
+            posts: posts
         },
     };    
 
@@ -55,9 +73,9 @@ export default function BlogsPage({posts}: { posts: Post[] }){
           {
             posts.map((post, index) => (
               <li key={index} style={{ listStyleType:"none", display:"inline"}}>
-                <Link href={"/blogs/" + index} style={{textDecoration:"none"}}>
+                <Link href={"/blogs/" + (index + 7)} style={{textDecoration:"none"}}>
                   <button style={{padding:"0px 50px 0px 50px" , display:"flex", flexDirection:"column", backgroundColor:"white", borderColor:"black", borderRadius:"5px",height:"300px"}}>
-                    <Link href={"/blogs/" + index} style={{textDecoration:"none", color:"black"}}><h1>{post.title}</h1></Link>
+                    <Link href={"/blogs/" + (index + 7)} style={{textDecoration:"none", color:"black"}}><h1>{post.title}</h1></Link>
                     <p>{post.previewText}</p>
                     <p><i>{post.author.firstname} {post.author.lastname}</i></p>
                   </button>
@@ -72,4 +90,3 @@ export default function BlogsPage({posts}: { posts: Post[] }){
     );
 };
 
-//0764aee47b380022a6bab0b4170bcc4a7e461205062b6fcebf044bf2d4bbc2f1e90e4801dcc032735bbbba43016bd27c0cfad835cd10144948a0f6c6d0b6ffbfe7061bca0542fe2d6ccc05d46b30a2e0bbef40d92ae405818ae7bbe68be481fdd21ad2d557c6ab9256df3c6bdc7ed4ac669e00d2cc7097105fce9dc3e54cd63a 

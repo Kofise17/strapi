@@ -1,5 +1,5 @@
 import { Marked } from "marked";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticProps } from "next";
 import Link from "next/link";
 
 const APIToken = process.env.TOKEN;
@@ -10,7 +10,7 @@ interface BandProps{
     bandMembers: BandMember[]
 }
 
-export const getServerSideProps : GetServerSideProps<BandProps> =async () => {
+export const getStaticProps : GetStaticProps<BandProps> =async () => {
     //Getting band
     const responseBand = await fetch("http://localhost:1337/api/bands?populate=*", {
         headers: {
@@ -19,13 +19,45 @@ export const getServerSideProps : GetServerSideProps<BandProps> =async () => {
     });
 
     const responseBandData = await responseBand.json();
-    const band: Band = responseBandData.data.map((band: any) => band.attributes);
+    let bands: Band[] = [];
+    //getting bandmembers
+    const responseBandMembers = await fetch ("http://localhost:1337/api/band-members", {
+        headers: {
+            Authorization:`Bearer ${APIToken}`
+        }
+    });
+    const responseBandMembersData = await responseBandMembers.json();
+    let bandMembers: BandMember[] = [];
+
+    if (responseBandMembersData && responseBandMembersData.data && responseBandMembersData.data.length > 0) {
+        bandMembers = responseBandMembersData.data.map((bandMemberData: any) => {
+            const bandMember: BandMember = {
+                stageName: bandMemberData.attributes.stageName,
+                fullName: bandMemberData.attributes.fullName,
+                shortBio: bandMemberData.attributes.shortBio,
+                longBio: bandMemberData.attributes.longBio,
+                bandMemberImage:bandMemberData.attributes.bandMemberImage
+            };
+            return bandMember;
+        });
+    }
+
+    if (responseBandData && responseBandData.data && responseBandData.data.length > 0) {
+        bands = responseBandData.data.map((bandData: any)=> {
+            const band: Band = {
+                name: bandData.attributes.name,
+                band_members: bandMembers,
+                bandImage:bandData.attributes.bandImage,
+                biography: bandData.attributes.biography
+            };
+            return band;
+        })
+    }
     //Getting BandMembers of chosen Band
-    const bandMembersData: BandMember[] = band[0].band_members.data.map((bandMember: any) => bandMember.attributes);
     return{
         props: {
-            band: band[0],
-            bandMembers: bandMembersData
+            band: bands[0],
+            bandMembers: bands[0].band_members
         }
     }
 };
@@ -41,8 +73,8 @@ export default function BandPage({band, bandMembers}: {band: Band, bandMembers: 
                 <h2>Met de volgende leden</h2>
                 <ul style={{display: "flex", flexDirection:"row", justifyContent:"space-between"}}>
                     {bandMembers.map((bandMember, index) =>(
-                        <div style={{display: "flex", flexDirection:"column", justifyContent:"space-evenly", alignItems:"center", boxShadow:"0 4px 8px 0 rgba(0,0,0,0.2)"}}>
-                            <Link href={`/biografie/${index}`}>
+                        <div key={index} style={{display: "flex", flexDirection:"column", justifyContent:"space-evenly", alignItems:"center", boxShadow:"0 4px 8px 0 rgba(0,0,0,0.2)"}}>
+                            <Link href={`/biografie/${index + 1}`}>
                                 <img src={bandMember.bandMemberImage} alt="" style={{height:"200px"}}/>
                             </Link>
                             <div style={{padding: "2px 16px 5px 20px", borderRadius:"5px", }}>
