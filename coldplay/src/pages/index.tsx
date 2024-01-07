@@ -48,12 +48,15 @@ export default function Home ({post} : {post: Post}) {
   return (
     <>
       <div style={{display: "flex", flexDirection:"column", alignItems:"center"}}>
-          <h1>Welkom</h1>
-          <p>Welkom bij deze blog-website over de beste band in de wereld: Coldplay</p>
-          <p>Op deze website kan je al hun singles, albums en videos bekijken en je kna ook nog veel bijleren over de leden zelf!</p>
-          <p>Go and explore my fellow Coldplayers!</p>
-          <h2>Nieuwste post</h2>
-          <p style={{width:"500px"}}>{post.content}</p>
+          <h1>Welcome to our Coldplay Blogpage your ultimate destination for all things Coldplay! 🎵✨</h1>
+          <p>Step into the enchanting world of Coldplay with us, where music meets emotions and melodies paint stories. Whether you're a dedicated Coldplay fan or just discovering their mesmerizing tunes, this blog is your go-to hub for the latest news, in-depth analyses, exclusive interviews, and captivating insights into the band's captivating journey.</p>
+          <p>Immerse yourself in the kaleidoscope of Coldplay's music, from their groundbreaking albums to their electrifying live performances. Explore behind-the-scenes stories, uncover the inspirations behind their lyrics, and join us as we celebrate the band's innovative spirit and impactful contributions to the world of music.</p>
+          <p>Get ready to dive into a symphony of articles, reviews, concert recaps, and everything in between, crafted by fellow Coldplay enthusiasts who share the passion for the band's soul-stirring melodies.</p>
+          <p>Join our community of fans as we journey through the colorful and ever-evolving world of Coldplay. Together, let's celebrate the music, the magic, and the endless inspiration that Coldplay brings to our lives.</p>
+          <p>Stay tuned for exciting updates, captivating discussions, and a melodious journey that will resonate with your heart and soul.</p>
+          <p>Welcome aboard, and let the adventure begin! 🌟🎶</p>
+          <h2>Most recent post</h2>
+          <p style={{width:"750px"}}>{post.content}</p>
           <p><i>- {post.author.firstname} {post.author.lastname}</i></p>
       </div>
     </>

@@ -50,7 +50,14 @@ export const getServerSideProps : GetServerSideProps<DiscographyProps> = async (
 export default function DiscoPage({albums, singles, videos}: {albums: Album[], singles: Single[], videos: Video[]}){
      return (
         <>
-            <h1>Dit is de discografie pagina</h1>
+            <div style={{display: "flex", justifyContent:"center", alignItems:"center", flexDirection:"column"}}>
+                <h1>Welcome to Coldplay's Musical Journey 🎶✨</h1>
+                <p>Explore the sonic evolution of Coldplay through their discography – a mesmerizing collection of albums that encapsulate the band's artistic growth, emotional depth, and timeless melodies.</p>
+                <p>From their debut album 'Parachutes' to the chart-topping hits of 'A Head Full of Dreams,' dive into each album's unique soundscapes, heartfelt lyrics, and captivating narratives that have touched millions of hearts worldwide.</p>
+                <p>Discover the stories behind the music, track listings, and the profound impact each album has had on Coldplay's illustrious career. Join us as we celebrate the brilliance, innovation, and musical genius of Coldplay across their acclaimed discography.</p>
+                <p>Let the melodies guide you through an unforgettable journey of passion, inspiration, and the magic that defines Coldplay's extraordinary musical legacy.</p>
+                <p>Start exploring and let the music speak to your soul. 🌈🎵</p>
+            </div>
             <div style={{display: "flex", justifyContent:"center", alignItems:"center", flexDirection:"column"}}>
                 <div style={{display:"flex"}}>
                     <ul>

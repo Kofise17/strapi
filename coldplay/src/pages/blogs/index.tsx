@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Marked } from "marked";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticProps } from "next";
 import Link from "next/link";
 
 const APIToken = process.env.TOKEN
@@ -43,17 +43,18 @@ export const getServerSideProps : GetServerSideProps<PostsProps> = async () => {
 };
 
 export default function BlogsPage({posts}: { posts: Post[] }){
+  posts = posts.reverse();
     return (
     <>
       <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-        <h1>Al onze beschikbare posts</h1>
-        <p>Klik op de titels van de post en je kan de volledige post bekijken</p>
+        <h1>All our available posts</h1>
+        <p>Click on the posts' title to read the full post</p>
       </div>
       <div style={{display:"flex"}}>
           <ul style={{columnCount:"3", padding:"5px 15px 5px 15px"}}>
           {
             posts.map((post, index) => (
-              <li key={index} style={{ listStyleType:"none"}}>
+              <li key={index} style={{ listStyleType:"none", display:"inline"}}>
                 <Link href={"/blogs/" + index} style={{textDecoration:"none"}}>
                   <button style={{padding:"0px 50px 0px 50px" , display:"flex", flexDirection:"column", backgroundColor:"white", borderColor:"black", borderRadius:"5px",height:"300px"}}>
                     <Link href={"/blogs/" + index} style={{textDecoration:"none", color:"black"}}><h1>{post.title}</h1></Link>
